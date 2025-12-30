@@ -25,7 +25,7 @@
 #   --min-sdk <num>    Override Android minSdkVersion (default 21)
 #
 # Output:
-#   build/Libwallet.aar
+#   build/libwallet.aar
 #
 ################################################################################
 
@@ -39,9 +39,9 @@ set -o pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$SCRIPT_DIR"
 BUILD_DIR="$PROJECT_DIR/build"
-MOBILE_DIR="$PROJECT_DIR/mobile"
+GOMOBILE_DIR="$PROJECT_DIR/gomobile"
 
-AAR_NAME="Libwallet.aar"
+AAR_NAME="libwallet.aar"
 MIN_GO_VERSION="1.21"
 DEFAULT_MIN_SDK="21"
 
@@ -76,7 +76,7 @@ log_step()    { echo -e "${CYAN}[STEP]${NC} $1"; }
 print_banner() {
   echo -e "${BOLD}${BLUE}"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo "  Gomobile Android Build Script - Libwallet"
+  echo "  Gomobile Android Build Script - libwallet"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo -e "${NC}"
 }
@@ -141,10 +141,10 @@ init_gomobile() {
 }
 
 verify_mobile_package() {
-  log_step "Verifying mobile package..."
-  [ -d "$MOBILE_DIR" ] || { log_error "Missing: $MOBILE_DIR"; exit 1; }
-  [ -f "$MOBILE_DIR/mobile.go" ] || { log_error "Missing: $MOBILE_DIR/mobile.go"; exit 1; }
-  log_info "✓ Mobile package found at $MOBILE_DIR"
+  log_step "Verifying libwallet package..."
+  [ -d "$GOMOBILE_DIR" ] || { log_error "Missing: $GOMOBILE_DIR"; exit 1; }
+  [ -f "$GOMOBILE_DIR/gomobile.go" ] || { log_error "Missing: $GOMOBILE_DIR/gomobile.go"; exit 1; }
+  log_info "✓ Libwallet package found at $GOMOBILE_DIR"
 }
 
 check_android_env() {
@@ -203,12 +203,12 @@ build_aar() {
 
   cd "$PROJECT_DIR"
 
-  log_info "Running: gomobile bind -target=android -androidapi=$MIN_SDK ${ldflags[*]} $verbose_flag -o $BUILD_DIR/$AAR_NAME ./mobile"
+  log_info "Running: gomobile bind -target=android -androidapi=$MIN_SDK ${ldflags[*]} $verbose_flag -o $BUILD_DIR/$AAR_NAME ./gomobile"
 
   if [ "$VERBOSE" = true ]; then
-    gomobile bind -target=android -androidapi="$MIN_SDK" "${ldflags[@]}" -v -o "$BUILD_DIR/$AAR_NAME" ./mobile
+    gomobile bind -target=android -androidapi="$MIN_SDK" "${ldflags[@]}" -v -o "$BUILD_DIR/$AAR_NAME" ./gomobile
   else
-    gomobile bind -target=android -androidapi="$MIN_SDK" "${ldflags[@]}" -o "$BUILD_DIR/$AAR_NAME" ./mobile
+    gomobile bind -target=android -androidapi="$MIN_SDK" "${ldflags[@]}" -o "$BUILD_DIR/$AAR_NAME" ./gomobile
   fi
 
   log_success "AAR build completed"
@@ -266,7 +266,7 @@ show_info() {
   print_separator
   echo -e "${CYAN}Project Dir:${NC} $PROJECT_DIR"
   echo -e "${CYAN}Build Dir:${NC} $BUILD_DIR"
-  echo -e "${CYAN}Mobile Dir:${NC} $MOBILE_DIR"
+  echo -e "${CYAN}Gomobile Dir:${NC} $GOMOBILE_DIR"
 
   if [ -f "$BUILD_DIR/$AAR_NAME" ]; then
     print_separator
