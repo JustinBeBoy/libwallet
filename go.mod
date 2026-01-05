@@ -25,6 +25,7 @@ require (
 	github.com/jrick/logrotate v1.1.2
 	github.com/kevinburke/nacl v0.0.0-20210405173606-cd9060f5f776
 	golang.org/x/crypto v0.33.0
+	golang.org/x/mobile v0.0.0-20251126181937-5c265dc024c4
 	golang.org/x/text v0.22.0
 )
 
@@ -46,9 +47,11 @@ require (
 	github.com/jrick/wsrpc/v2 v2.3.8 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.9 // indirect
 	go.etcd.io/bbolt v1.3.11 // indirect
-	golang.org/x/sync v0.11.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/mod v0.30.0 // indirect
+	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/tools v0.39.0 // indirect
 	lukechampine.com/blake3 v1.3.0 // indirect
 )
 
-go 1.22
+go 1.24.0
