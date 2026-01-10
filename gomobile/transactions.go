@@ -25,7 +25,7 @@ func CreateTransaction(name, createTxReqJSON string) (string, error) {
 
 	var req CreateTxReq
 	if err := json.Unmarshal([]byte(createTxReqJSON), &req); err != nil {
-		return "", fmt.Errorf("malformed sign send request: %v", err)
+		return "", fmt.Errorf("malformed create transaction request: %v", err)
 	}
 
 	outputs := make([]*dcr.Output, len(req.Outputs))
@@ -52,7 +52,7 @@ func CreateTransaction(name, createTxReqJSON string) (string, error) {
 
 	txBytes, txhash, fee, err := w.CreateTransaction(w.ctx, outputs, inputs, ignoreInputs, uint64(req.FeeRate), req.SendAll, req.Sign)
 	if err != nil {
-		return "", fmt.Errorf("unable to sign send transaction: %v", err)
+		return "", fmt.Errorf("unable to create transaction: %v", err)
 	}
 
 	res := &CreateTxRes{
@@ -63,7 +63,7 @@ func CreateTransaction(name, createTxReqJSON string) (string, error) {
 
 	b, err := json.Marshal(res)
 	if err != nil {
-		return "", fmt.Errorf("unable to marshal sign send transaction result: %v", err)
+		return "", fmt.Errorf("unable to marshal create transaction result: %v", err)
 	}
 	return string(b), nil
 }
@@ -301,7 +301,7 @@ func AddSigs(name, txHex, sigScriptsJSON string) (string, error) {
 
 	signedHex, err := w.AddSigs(txHex, sigScripts)
 	if err != nil {
-		return "", fmt.Errorf("unable sign tx: %v", err)
+		return "", fmt.Errorf("unable to sign tx: %v", err)
 	}
 	return signedHex, nil
 }
