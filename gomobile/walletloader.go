@@ -208,10 +208,11 @@ func CloseWallet(name string) (string, error) {
 	}
 	w.cancelCtx()
 	w.Wait()
-	if err := w.CloseWallet(); err != nil {
+	err := w.CloseWallet()
+	delete(wallets, name) // Always remove to prevent leaked references
+	if err != nil {
 		return "", fmt.Errorf("close wallet %q error: %v", name, err)
 	}
-	delete(wallets, name)
 	return fmt.Sprintf("wallet %q shutdown", name), nil
 }
 
@@ -279,6 +280,7 @@ func ChangePassphrase(name, oldPass, newPass string) (string, error) {
 			logMtx.RLock()
 			log.Errorf("error undoing passphrase change: %v", undoErr)
 			logMtx.RUnlock()
+			return "", fmt.Errorf("critical failure: seed re-encryption failed (%v) and passphrase rollback failed (%v); wallet may be in an inconsistent state", err, undoErr)
 		}
 		return "", fmt.Errorf("w.ReEncryptSeed error: %v", err)
 	}

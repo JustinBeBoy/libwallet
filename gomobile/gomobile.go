@@ -2,8 +2,8 @@
 // This package is designed to be compiled with gomobile for iOS and Android.
 //
 // Build examples:
-//   gomobile bind -target=android -androidapi=23 -o ./build/libwallet.aar ./mobile
-//   gomobile bind -target=ios -o ./build/Libwallet.xcframework ./mobile
+//   gomobile bind -target=android -androidapi=23 -o ./build/libwallet.aar ./gomobile
+//   gomobile bind -target=ios -o ./build/Libwallet.xcframework ./gomobile
 package libwallet
 
 import (
