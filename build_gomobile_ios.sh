@@ -44,7 +44,7 @@ set -o pipefail  # Pipe failures propagate
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$SCRIPT_DIR"
 BUILD_DIR="$PROJECT_DIR/build"
-MOBILE_DIR="$PROJECT_DIR/mobile"
+MOBILE_DIR="$PROJECT_DIR/gomobile"
 
 FRAMEWORK_NAME="Libwallet"
 XCFRAMEWORK_NAME="${FRAMEWORK_NAME}.xcframework"
@@ -201,21 +201,21 @@ check_gomobile() {
     fi
 }
 
-# Verify mobile package exists
+# Verify gomobile package exists
 verify_mobile_package() {
-    log_step "Verifying mobile package..."
+    log_step "Verifying gomobile package..."
 
     if [ ! -d "$MOBILE_DIR" ]; then
-        log_error "Mobile package directory not found: $MOBILE_DIR"
+        log_error "Gomobile package directory not found: $MOBILE_DIR"
         exit 1
     fi
 
-    if [ ! -f "$MOBILE_DIR/mobile.go" ]; then
-        log_error "mobile.go not found in $MOBILE_DIR"
+    if [ ! -f "$MOBILE_DIR/gomobile.go" ]; then
+        log_error "gomobile.go not found in $MOBILE_DIR"
         exit 1
     fi
 
-    log_info "✓ Mobile package found at $MOBILE_DIR"
+    log_info "✓ Gomobile package found at $MOBILE_DIR"
 }
 
 # Validate XCFramework structure
@@ -323,19 +323,19 @@ build_device() {
 
     cd "$PROJECT_DIR"
 
-    log_info "Running: gomobile bind -target=$target $ldflags $verbose_flag -o $BUILD_DIR/$XCFRAMEWORK_NAME ./mobile"
+    log_info "Running: gomobile bind -target=$target $ldflags $verbose_flag -o $BUILD_DIR/$XCFRAMEWORK_NAME ./gomobile"
 
     if [ "$OPTIMIZE" = true ]; then
         if [ "$VERBOSE" = true ]; then
-            gomobile bind -target="$target" -ldflags="-s -w" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -ldflags="-s -w" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         else
-            gomobile bind -target="$target" -ldflags="-s -w" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -ldflags="-s -w" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         fi
     else
         if [ "$VERBOSE" = true ]; then
-            gomobile bind -target="$target" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         else
-            gomobile bind -target="$target" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         fi
     fi
 
@@ -366,19 +366,19 @@ build_simulator() {
 
     cd "$PROJECT_DIR"
 
-    log_info "Running: gomobile bind -target=$target $ldflags $verbose_flag -o $BUILD_DIR/$XCFRAMEWORK_NAME ./mobile"
+    log_info "Running: gomobile bind -target=$target $ldflags $verbose_flag -o $BUILD_DIR/$XCFRAMEWORK_NAME ./gomobile"
 
     if [ "$OPTIMIZE" = true ]; then
         if [ "$VERBOSE" = true ]; then
-            gomobile bind -target="$target" -ldflags="-s -w" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -ldflags="-s -w" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         else
-            gomobile bind -target="$target" -ldflags="-s -w" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -ldflags="-s -w" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         fi
     else
         if [ "$VERBOSE" = true ]; then
-            gomobile bind -target="$target" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         else
-            gomobile bind -target="$target" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         fi
     fi
 
@@ -409,19 +409,19 @@ build_all() {
 
     cd "$PROJECT_DIR"
 
-    log_info "Running: gomobile bind -target=$target $ldflags $verbose_flag -o $BUILD_DIR/$XCFRAMEWORK_NAME ./mobile"
+    log_info "Running: gomobile bind -target=$target $ldflags $verbose_flag -o $BUILD_DIR/$XCFRAMEWORK_NAME ./gomobile"
 
     if [ "$OPTIMIZE" = true ]; then
         if [ "$VERBOSE" = true ]; then
-            gomobile bind -target="$target" -ldflags="-s -w" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -ldflags="-s -w" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         else
-            gomobile bind -target="$target" -ldflags="-s -w" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -ldflags="-s -w" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         fi
     else
         if [ "$VERBOSE" = true ]; then
-            gomobile bind -target="$target" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -v -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         else
-            gomobile bind -target="$target" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./mobile || return 1
+            gomobile bind -target="$target" -o "$BUILD_DIR/$XCFRAMEWORK_NAME" ./gomobile || return 1
         fi
     fi
 
